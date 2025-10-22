@@ -23,6 +23,7 @@ import type {
   HouseholdExpenseData,
   DataCategory
 } from '@/types';
+import Link from 'next/link';
 
 // Memoized Chart Component to prevent unnecessary re-renders
 const MemoizedBarChart = memo(({ data, dataKey, color, title, description }: {
@@ -158,10 +159,8 @@ const Home = () => {
           }));
           setHouseholdExpenseData(expense);
         }
-
-        setLoading(false);
       } catch (error) {
-        setLoading(false);
+        console.error('Error fetching data:', error);
       }
     };
 
@@ -355,23 +354,10 @@ const Home = () => {
     };
   }, [selectedStateForChart, incomeData, populationData, crimeData, waterConsumptionData, householdExpenseData]);
 
-  // Show loader until all data is loaded
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-        <div className="text-center">
-          <div className="inline-block h-16 w-16 animate-spin rounded-full border-4 border-solid border-sky-600 border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite] mb-4"></div>
-          <h2 className="text-2xl font-bold text-gray-800 mb-2">Loading Peta Malaysia</h2>
-          <p className="text-gray-600">Fetching data from DOSM...</p>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="min-h-screen bg-gray-100 py-12 px-4">
       <div className="max-w-6xl mx-auto">
-        <h1 className='text-4xl lg:text-8xl font-bold text-center mb-4 text-gray-800'>Peta Malaysia</h1>
+        <h1 className='text-4xl lg:text-8xl font-bold text-center mb-4 text-gray-800'>Data Malaysia</h1>
         <div className='mb-12'>
           <motion.div className="relative mx-4 my-4 flex items-center justify-center gap-4 text-center sm:mx-0 sm:mb-0">
             <LayoutTextFlip
@@ -512,13 +498,13 @@ const Home = () => {
         <div className="mt-12 bg-white rounded-3xl shadow-lg p-8">
           <h2 className="text-3xl font-bold text-center mb-6 text-gray-800">State Data Trends</h2>
 
-          <div className='flex flex-col gap-4 lg:flex-row justify-center items-center mb-8'>
+          <div className='flex flex-col gap-4 lg:flex-row justify-center items-center mb-8 w-full px-4 lg:px-0'>
             {/* State Selector Dropdown */}
-            <div className="">
+            <div className="w-full md:w-auto">
               <p className="text-xs font-medium text-gray-700 text-start">Select a state</p>
-              <div className="flex justify-center">
+              <div className="w-full">
                 <Select value={selectedStateForChart} onValueChange={setSelectedStateForChart}>
-                  <SelectTrigger className="w-[280px]">
+                  <SelectTrigger className="w-full md:w-[280px]">
                     <SelectValue placeholder="Select a state" />
                   </SelectTrigger>
                   <SelectContent>
@@ -533,14 +519,14 @@ const Home = () => {
             </div>
 
             {/* Chart Type Selector Dropdown */}
-            <div className="">
-              <p className="text-xs font-medium text-gray-700 text-start">Select a data</p>
-              <div className="flex justify-center">
+            <div className="w-full md:w-auto">
+              <p className="text-xs font-medium text-gray-700 text-start">Select data</p>
+              <div className="w-full">
                 <Select
                   value={selectedChartType}
                   onValueChange={(value) => setSelectedChartType(value as 'income' | 'population' | 'crime' | 'water' | 'expense')}
                 >
-                  <SelectTrigger className="w-[280px]">
+                  <SelectTrigger className="w-full md:w-[280px]">
                     <SelectValue placeholder="Select data type" />
                   </SelectTrigger>
                   <SelectContent>
@@ -607,9 +593,12 @@ const Home = () => {
 
         <div className="mt-8 text-center text-sm text-gray-600">
           <p className="mb-2">Malaysia consists of 13 states and 3 federal territories</p>
-          <p className="text-xs text-gray-500 mb-4">
+          <p className="text-xs text-gray-500 mb-2">
             Data source: Department of Statistics Malaysia (DOSM) - Household Income & Expenditure Survey
           </p>
+          <a href="https://x.com/solahsol_" className="text-xs text-cyan-600 mb-4 underline">
+            Built for fun in 3 hours by Solah
+          </a>
         </div>
         
       </div>
