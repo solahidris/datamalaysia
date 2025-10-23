@@ -118,3 +118,14 @@
     @apply bg-background text-foreground;
   }
 }
+
+@keyframes soundWave {
+  0%, 100% {
+    transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y))) rotate(var(--angle)) scaleY(0.3);
+    opacity: 0.3;
+  }
+  50% {
+    transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y))) rotate(var(--angle)) scaleY(1);
+    opacity: 1;
+  }
+}
