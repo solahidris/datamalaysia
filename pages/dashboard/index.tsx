@@ -6,10 +6,12 @@ import {
   LogOutIcon,
   MicIcon,
   MicOffIcon,
+  PhoneOffIcon,
   ChevronUp,
   Pause,
   MessageSquare,
   Clock,
+  Lightbulb,
 } from "lucide-react"
 
 import {
@@ -48,9 +50,10 @@ const navigationItems = [
 
 const Dashboard = () => {
   const [isMuted, setIsMuted] = useState(false)
-  const [isCallActive, setIsCallActive] = useState(true)
+  const [isCallActive, setIsCallActive] = useState(false)
   const [callDuration, setCallDuration] = useState(0)
   const [isListening, setIsListening] = useState(false)
+  const [controlsExpanded, setControlsExpanded] = useState(false)
 
   // Simulate call duration timer
   useEffect(() => {
@@ -59,16 +62,27 @@ const Dashboard = () => {
         setCallDuration(prev => prev + 1)
       }, 1000)
       return () => clearInterval(timer)
+    } else {
+      setCallDuration(0)
     }
   }, [isCallActive])
 
-  // Simulate AI listening animation
+  // Simulate AI listening animation - only when call is active
   useEffect(() => {
-    const interval = setInterval(() => {
-      setIsListening(prev => !prev)
-    }, 1500)
-    return () => clearInterval(interval)
-  }, [])
+    if (isCallActive) {
+      const interval = setInterval(() => {
+        setIsListening(prev => !prev)
+      }, 1500)
+      return () => clearInterval(interval)
+    } else {
+      setIsListening(false)
+    }
+  }, [isCallActive])
+
+  // Auto-expand controls when call starts, auto-collapse when call ends
+  useEffect(() => {
+    setControlsExpanded(isCallActive)
+  }, [isCallActive])
 
   const formatDuration = (seconds: number) => {
     const mins = Math.floor(seconds / 60)
@@ -87,13 +101,11 @@ const Dashboard = () => {
 
   return (
     <SidebarProvider>
-      <Sidebar className="!border-r-0 bg-[#1a1d29] text-white [&>div>div]:!border-r-0">
+      <Sidebar className="!border-r-0 bg-gradient-to-t from-slate-950 to-slate-800 text-white [&>div>div]:!border-r-0">
         <SidebarHeader className="border-b border-slate-800/50 px-6 py-6">
           <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center">
-              <svg viewBox="0 0 24 24" className="h-8 w-8 text-blue-400" fill="currentColor">
-                <circle cx="12" cy="12" r="10" />
-              </svg>
+            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-slate-700/50">
+              <Lightbulb className="h-6 w-6 text-blue-400" />
             </div>
             <div>
               <h2 className="text-2xl font-bold tracking-wider">NASIHAT</h2>
@@ -123,8 +135,8 @@ const Dashboard = () => {
           </SidebarGroup>
         </SidebarContent>
 
-        <SidebarFooter className="border-t border-slate-800/50 p-4">
-          <div className="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-800/30 transition-colors cursor-pointer">
+        <SidebarFooter className="border-t-2 border-slate-800 w-[90%] mx-auto py-4">
+          <div className="flex items-center justify-between gap-3 py-3 rounded-lg transition-colors">
             <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-slate-700/50">
               <UserIcon className="h-5 w-5 text-slate-300" />
             </div>
@@ -132,14 +144,14 @@ const Dashboard = () => {
               <p className="text-sm font-semibold text-white">Danial Hadi</p>
               <p className="text-xs text-slate-400 truncate">danial@rapidscreen.io</p>
             </div>
-            <button className="p-1 hover:bg-slate-700/50 rounded">
+            <button className="p-2 hover:bg-slate-700/50 rounded cursor-pointer">
               <LogOutIcon className="h-4 w-4 text-slate-400" />
             </button>
           </div>
         </SidebarFooter>
       </Sidebar>
 
-      <SidebarInset className="bg-[#0f1117] relative overflow-hidden">
+      <SidebarInset className="bg-gradient-to-b from-slate-950 to-slate-800 relative overflow-hidden">
         {/* Radial Gradient Background */}
         <div className="absolute inset-0 pointer-events-none">
           <div 
@@ -149,20 +161,20 @@ const Dashboard = () => {
             }}
           />
         </div>
-        <header className="sticky top-0 z-10 flex h-16 items-center justify-between border-b border-slate-800/50 bg-[#1a1d29]/80 backdrop-blur-sm px-6">
+        <header className="sticky top-0 z-10 flex h-16 items-center justify-between border-b border-slate-800/50 bg-slate-800 backdrop-blur-sm px-6">
           <div className="flex items-center gap-4">
-            <SidebarTrigger className="text-white" />
+            <SidebarTrigger className="text-white border-2 border-x-0 border-white/10 bg-white/10" />
             <h1 className="text-xl font-semibold text-white">Call Nasihat</h1>
           </div>
           <div className="flex items-center gap-4">
-            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-slate-800/50 text-white font-semibold">
+            <div className="border-2 border-x-0 border-white/10 flex h-11 w-11 items-center justify-center rounded-full bg-slate-700/50 text-white font-semibold">
               DH
             </div>
           </div>
         </header>
 
-        <main className="relative flex-1 overflow-auto flex flex-col items-center justify-center p-6 min-h-screen">
-          <div className="w-full max-w-3xl flex-1 flex flex-col items-center justify-center">
+        <main className="relative flex-1 overflow-auto flex flex-col items-center p-6 min-h-[90vh]">
+          <div className="w-full max-w-3xl flex-1 flex flex-col items-center mt-12">
             <div className="space-y-12 w-full">
                 {/* Title */}
                 <div className="text-center">
@@ -175,7 +187,7 @@ const Dashboard = () => {
                 <div className="flex flex-col items-center justify-center">
                   <div className="relative flex items-center justify-center">
                     {/* Outer glow rings */}
-                    <div className="absolute inset-0 w-80 h-80 rounded-full">
+                    <div className="absolute inset-0 w-56 h-56 rounded-full">
                       {isListening && (
                         <>
                           <div 
@@ -196,9 +208,9 @@ const Dashboard = () => {
                     </div>
 
                     {/* Main glowing circle */}
-                    <div className="relative w-72 h-72 rounded-full flex items-center justify-center">
+                    <div className="relative w-50 h-50 rounded-full flex items-center justify-center">
                       {/* Inner dark circle */}
-                      <div className="absolute inset-8 rounded-full bg-slate-900" />
+                      <div className="absolute inset-6 rounded-full bg-slate-900" />
                       
                       {/* Glowing border ring */}
                       <div 
@@ -227,7 +239,7 @@ const Dashboard = () => {
                       {/* Shimmer effect - animated dots */}
                       {[...Array(20)].map((_, i) => {
                         const angle = (i / 20) * 360
-                        const radius = 144 // Half of w-72 (288px / 2)
+                        const radius = 100 // Half of w-50 (200px / 2)
                         const x = Math.cos((angle * Math.PI) / 180) * radius
                         const y = Math.sin((angle * Math.PI) / 180) * radius
                         return (
@@ -249,57 +261,73 @@ const Dashboard = () => {
 
                   {/* Status Text */}
                   <div className="text-center mt-8">
-                    <p className="text-lg text-slate-400">
-                      {isListening ? 'Listening' : 'Thinking...'}
+                    <p className="text-slate-400 tracking-wide text-sm">
+                      {!isCallActive ? 'Call to start a conversation' : (isListening ? 'Listening' : 'Thinking...')}
                     </p>
                   </div>
                 </div>
 
                 {/* Call Controls with Glassmorphism */}
                 <div className="flex items-center justify-center gap-4 pt-8">
-                  <div className="flex items-center gap-4 px-6 py-4 rounded-full bg-slate-800/30 backdrop-blur-xl border border-white/10 shadow-2xl">
-                    {/* Chevron Up Button */}
-                    <button className="flex items-center justify-center h-14 w-14 rounded-full bg-slate-700/50 hover:bg-slate-600/50 text-slate-300 transition-all">
-                      <ChevronUp className="h-6 w-6" />
-                    </button>
-
-                    {/* Microphone Button */}
-                    <button
-                      onClick={handleMuteToggle}
-                      className={`flex items-center justify-center h-14 w-14 rounded-full transition-all ${
-                        isMuted 
-                          ? 'bg-red-500 hover:bg-red-600 text-white' 
-                          : 'bg-slate-700/50 hover:bg-slate-600/50 text-slate-300'
-                      }`}
+                  <div className="flex items-center gap-4 px-6 py-4 rounded-full bg-slate-800/30 backdrop-blur-xl border-2 border-x-0 border-white/10 shadow-2xl transition-all duration-300">
+                    {/* Chevron Toggle Button */}
+                    <button 
+                      onClick={() => setControlsExpanded(!controlsExpanded)}
+                      className="border-2 border-x-0 border-white/10 flex items-center justify-center h-14 w-14 rounded-full bg-slate-700/50 hover:bg-slate-600/50 text-slate-300 transition-all cursor-pointer"
                     >
-                      {isMuted ? (
-                        <MicOffIcon className="h-6 w-6" />
-                      ) : (
-                        <MicIcon className="h-6 w-6" />
-                      )}
+                      <ChevronUp className={`h-6 w-6 transition-transform duration-300 ${controlsExpanded ? 'rotate-180' : ''}`} />
                     </button>
 
-                    {/* Pause Button */}
-                    <button className="flex items-center justify-center h-14 w-14 rounded-full bg-slate-700/50 hover:bg-slate-600/50 text-slate-300 transition-all">
-                      <Pause className="h-6 w-6" />
-                    </button>
+                    {/* Expandable Controls - Only show when expanded */}
+                    <div className={`flex items-center gap-4 overflow-hidden transition-all duration-300 ${
+                      controlsExpanded ? 'max-w-[400px] opacity-100' : 'max-w-0 opacity-0'
+                    }`}>
+                      {/* Microphone Button */}
+                      <button
+                        onClick={handleMuteToggle}
+                        className={`border-2 border-x-0 border-white/10 flex items-center justify-center h-14 w-14 rounded-full transition-all flex-shrink-0 cursor-pointer ${
+                          isMuted 
+                            ? 'bg-red-500 hover:bg-red-600 text-white' 
+                            : 'bg-slate-700/50 hover:bg-slate-600/50 text-slate-300'
+                        }`}
+                      >
+                        {isMuted ? (
+                          <MicOffIcon className="h-6 w-6" />
+                        ) : (
+                          <MicIcon className="h-6 w-6" />
+                        )}
+                      </button>
 
-                    {/* Message Button */}
-                    <button className="flex items-center justify-center h-14 w-14 rounded-full bg-slate-700/50 hover:bg-slate-600/50 text-slate-300 transition-all">
-                      <MessageSquare className="h-6 w-6" />
-                    </button>
+                      {/* Pause Button */}
+                      <button className="border-2 border-x-0 border-white/10 flex items-center justify-center h-14 w-14 rounded-full bg-slate-700/50 hover:bg-slate-600/50 text-slate-300 transition-all flex-shrink-0 cursor-pointer">
+                        <Pause className="h-6 w-6" />
+                      </button>
 
-                    {/* Timer/Clock Button */}
-                    <button className="flex items-center justify-center h-14 w-14 rounded-full bg-yellow-600 hover:bg-yellow-500 text-white transition-all">
-                      <Clock className="h-6 w-6" />
-                    </button>
+                      {/* Message Button */}
+                      <button className="border-2 border-x-0 border-white/10 flex items-center justify-center h-14 w-14 rounded-full bg-slate-700/50 hover:bg-slate-600/50 text-slate-300 transition-all flex-shrink-0 cursor-pointer">
+                        <MessageSquare className="h-6 w-6" />
+                      </button>
 
-                    {/* Start Call Button */}
+                      {/* Timer/Clock Button */}
+                      <button className="border-2 border-x-0 border-white/10 flex items-center justify-center h-14 w-14 rounded-full bg-yellow-600 hover:bg-yellow-500 text-white transition-all flex-shrink-0 cursor-pointer">
+                        <Clock className="h-6 w-6" />
+                      </button>
+                    </div>
+
+                    {/* Call Button - Always visible */}
                     <button
                       onClick={() => setIsCallActive(!isCallActive)}
-                      className="flex items-center justify-center h-14 w-14 rounded-full bg-green-500 hover:bg-green-600 text-white transition-all hover:scale-105"
+                      className={`border-2 border-x-0 border-white/10 flex items-center justify-center h-14 w-14 rounded-full text-white transition-all hover:scale-105 cursor-pointer ${
+                        isCallActive 
+                          ? 'bg-red-500 hover:bg-red-600' 
+                          : 'bg-green-500 hover:bg-green-600'
+                      }`}
                     >
-                      <PhoneIcon className="h-6 w-6" />
+                      {isCallActive ? (
+                        <PhoneOffIcon className="h-6 w-6" />
+                      ) : (
+                        <PhoneIcon className="h-6 w-6" />
+                      )}
                     </button>
                   </div>
                 </div>
@@ -307,9 +335,9 @@ const Dashboard = () => {
           </div>
 
           {/* Footer Branding */}
-          <div className="absolute bottom-6 right-6">
-            <p className="text-xs text-slate-500 font-medium tracking-wide">
-              POWERED BY <span className="text-blue-400">RAPID</span>SCREEN
+          <div className="absolute bottom-6 right-6 border-2 border-x-0 border-white/10 rounded-full p-2 px-6 bg-white/5">
+            <p className="text-xs text-white font-bold tracking-wide">
+              POWERED BY <span className="text-orange-400 italic">RAPID</span>SCREEN
             </p>
           </div>
         </main>
