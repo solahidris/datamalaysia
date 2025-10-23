@@ -184,91 +184,79 @@ const Dashboard = () => {
                   </h2>
                 </div>
 
-                {/* AI Avatar/Visualization - Circular Sound Wave */}
+                {/* AI Avatar/Visualization - Enhanced Sound Wave */}
                 <div className="flex flex-col items-center justify-center">
                   <div className="relative flex items-center justify-center">
+                    {/* Outer pulsing rings */}
+                    <div className={`absolute w-96 h-96 rounded-full border-2 animate-pulse-ring-1 ${
+                      aiState === 'listening' ? 'border-blue-500/20' :
+                      aiState === 'thinking' ? 'border-yellow-500/20' :
+                      aiState === 'replying' ? 'border-green-500/20' :
+                      'border-slate-500/20'
+                    }`} />
+                    <div className={`absolute w-[28rem] h-[28rem] rounded-full border-2 animate-pulse-ring-2 ${
+                      aiState === 'listening' ? 'border-blue-500/15' :
+                      aiState === 'thinking' ? 'border-yellow-500/15' :
+                      aiState === 'replying' ? 'border-green-500/15' :
+                      'border-slate-500/15'
+                    }`} />
+                    <div className={`absolute w-[32rem] h-[32rem] rounded-full border-2 animate-pulse-ring-3 ${
+                      aiState === 'listening' ? 'border-blue-500/10' :
+                      aiState === 'thinking' ? 'border-yellow-500/10' :
+                      aiState === 'replying' ? 'border-green-500/10' :
+                      'border-slate-500/10'
+                    }`} />
+                    
                     {/* Main sound wave container */}
-                    <div className="relative w-50 h-50 rounded-full flex items-center justify-center">
-                      {/* Background circle */}
-                      <div className="absolute inset-0 rounded-full bg-slate-800/50 backdrop-blur-sm border border-slate-700/30" />
-                      
-                      {/* Sound wave bars */}
-                      <div className="relative w-full h-full flex items-center justify-center">
-                        {[...Array(32)].map((_, i) => {
-                          const angle = (i / 32) * 360
-                          const radius = 80 // Inner radius for bars
-                          const x = Math.cos((angle * Math.PI) / 180) * radius
-                          const y = Math.sin((angle * Math.PI) / 180) * radius
-                          
-                          // Create varying heights for more realistic sound wave
-                          const baseHeight = aiState === 'listening' ? 8 + Math.random() * 12 : 
-                                           aiState === 'thinking' ? 6 + Math.random() * 8 : 
-                                           aiState === 'replying' ? 4 + Math.random() * 6 : 2
-                          const height = aiState !== 'idle' ? baseHeight : 2
-                          
-                          return (
-                            <div
-                              key={i}
-                              className={`absolute rounded-full transition-all duration-150 ${
-                                aiState === 'listening' ? 'bg-gradient-to-t from-blue-500 to-cyan-400' :
-                                aiState === 'thinking' ? 'bg-gradient-to-t from-yellow-500 to-orange-400' :
-                                aiState === 'replying' ? 'bg-gradient-to-t from-green-500 to-emerald-400' :
-                                'bg-gradient-to-t from-slate-500 to-slate-400'
-                              }`}
-                              style={{
-                                left: '50%',
-                                top: '50%',
-                                width: '3px',
-                                height: `${height}px`,
-                                transform: `translate(calc(-50% + ${x}px), calc(-50% + ${y}px)) rotate(${angle}deg)`,
-                                transformOrigin: 'center',
-                                opacity: aiState === 'listening' ? 0.8 + Math.random() * 0.2 : 
-                                        aiState === 'thinking' ? 0.6 + Math.random() * 0.2 :
-                                        aiState === 'replying' ? 0.7 + Math.random() * 0.2 : 0.3,
-                                animation: aiState !== 'idle' ? `soundWave 1.5s ease-in-out infinite ${i * 0.05}s` : 'none',
-                                '--x': `${x}px`,
-                                '--y': `${y}px`,
-                                '--angle': `${angle}deg`,
-                              } as React.CSSProperties}
-                            />
-                          )
-                        })}
-                      </div>
+                    <div className="relative w-44 h-44 rounded-full flex items-center justify-center">
+                      {/* Background gradient circle */}
+                      <div className={`absolute inset-0 rounded-full transition-all duration-500 ${
+                        aiState === 'listening' ? 'bg-gradient-to-br from-blue-500/20 via-cyan-500/10 to-transparent' :
+                        aiState === 'thinking' ? 'bg-gradient-to-br from-yellow-500/20 via-orange-500/10 to-transparent' :
+                        aiState === 'replying' ? 'bg-gradient-to-br from-green-500/20 via-emerald-500/10 to-transparent' :
+                        'bg-gradient-to-br from-slate-500/20 via-slate-400/10 to-transparent'
+                      } backdrop-blur-sm border border-white/10 shadow-2xl`} />
 
-                      {/* Center dot */}
-                      <div className={`absolute w-4 h-4 rounded-full transition-all duration-300 ${
-                        aiState === 'listening' ? 'bg-gradient-to-r from-blue-500 to-cyan-400 scale-110 shadow-lg shadow-blue-500/50' :
-                        aiState === 'thinking' ? 'bg-gradient-to-r from-yellow-500 to-orange-400 scale-105 shadow-lg shadow-yellow-500/50' :
-                        aiState === 'replying' ? 'bg-gradient-to-r from-green-500 to-emerald-400 scale-110 shadow-lg shadow-green-500/50' :
-                        'bg-gradient-to-r from-slate-500 to-slate-400 scale-100'
-                      }`} />
+
+                      {/* Center core with enhanced effects */}
+                      <div className={`absolute w-40 h-40 rounded-full transition-all duration-500 ${
+                        aiState === 'listening' ? 'bg-gradient-to-r from-blue-500 via-cyan-400 to-blue-500 scale-110 shadow-2xl shadow-blue-500/50' :
+                        aiState === 'thinking' ? 'bg-gradient-to-r from-yellow-500 via-orange-400 to-yellow-500 scale-100 shadow-2xl shadow-yellow-500/50' :
+                        aiState === 'replying' ? 'bg-gradient-to-r from-green-500 via-emerald-400 to-green-500 scale-110 shadow-2xl shadow-green-500/50' :
+                        'bg-gradient-to-r from-slate-500 via-slate-400 to-slate-500 scale-100'
+                      } animate-pulse-glow`} />
                       
-                      {/* Outer pulse rings */}
-                      {aiState !== 'idle' && (
-                        <>
-                          <div className={`absolute inset-0 rounded-full border-2 animate-ping ${
-                            aiState === 'listening' ? 'border-blue-500/30' :
-                            aiState === 'thinking' ? 'border-yellow-500/30' :
-                            'border-green-500/30'
-                          }`} />
-                          <div className={`absolute inset-2 rounded-full border animate-pulse ${
-                            aiState === 'listening' ? 'border-cyan-400/20' :
-                            aiState === 'thinking' ? 'border-orange-400/20' :
-                            'border-emerald-400/20'
-                          }`} />
-                        </>
-                      )}
+                      {/* Inner core dot */}
+                      <div className={`absolute w-12 h-12 rounded-full transition-all duration-300 ${
+                        aiState === 'listening' ? 'bg-gradient-to-br from-white to-transparent shadow-lg shadow-blue-500/30' :
+                        aiState === 'thinking' ? 'bg-gradient-to-br from-white to-transparent shadow-lg shadow-yellow-500/30' :
+                        aiState === 'replying' ? 'bg-gradient-to-br from-white to-transparent shadow-lg shadow-green-500/30' :
+                        'bg-white/60'
+                      } animate-pulse-inner`} />
                     </div>
                   </div>
 
-                  {/* Status Text */}
-                  <div className="text-center mt-8">
-                    <p className="text-slate-400 tracking-wide text-sm">
-                      {!isCallActive ? 'Call to start a conversation' : 
-                       aiState === 'listening' ? 'Listening...' :
-                       aiState === 'thinking' ? 'Thinking...' :
-                       aiState === 'replying' ? 'Replying...' : 'Ready'}
-                    </p>
+                  {/* Enhanced Status Text */}
+                  <div className="text-center mt-12">
+                    <div className={`inline-flex border-x-0 border-2 items-center gap-2 px-6 py-2 rounded-full backdrop-blur-sm border transition-all duration-300 ${
+                      aiState === 'listening' ? 'bg-blue-500/10 border-blue-500/10 text-blue-300' :
+                      aiState === 'thinking' ? 'bg-yellow-500/10 border-yellow-500/10 text-yellow-300' :
+                      aiState === 'replying' ? 'bg-green-500/10 border-green-500/10 text-green-300' :
+                      'bg-slate-500/10 border-slate-500/30 text-slate-400'
+                    }`}>
+                      <div className={`w-2 h-2 rounded-full animate-pulse ${
+                        aiState === 'listening' ? 'bg-blue-400' :
+                        aiState === 'thinking' ? 'bg-yellow-400' :
+                        aiState === 'replying' ? 'bg-green-400' :
+                        'bg-slate-400'
+                      }`} />
+                      <p className="tracking-wide text-sm font-medium">
+                        {!isCallActive ? 'Call to start a conversation' : 
+                         aiState === 'listening' ? 'Listening...' :
+                         aiState === 'thinking' ? 'Thinking...' :
+                         aiState === 'replying' ? 'Replying...' : 'Ready'}
+                      </p>
+                    </div>
                   </div>
                 </div>
 
@@ -354,8 +342,8 @@ const Dashboard = () => {
             onClick={() => setAiState('listening')}
             className={`h-12 w-12 cursor-pointer rounded-full text-sm font-medium transition-all duration-200 backdrop-blur-sm ${
               aiState === 'listening' 
-                ? 'bg-blue-500/20 text-blue-400 border border-blue-500/30 shadow-lg shadow-blue-500/20' 
-                : 'bg-slate-800/30 text-slate-400 border border-slate-700/30 hover:bg-slate-700/30'
+                ? 'bg-blue-500/20 text-blue-400 border-2 border-x-0 border-blue-500/30 shadow-lg shadow-blue-500/20' 
+                : 'bg-slate-800/30 text-slate-400 border-2 border-x-0 border-slate-700/30 hover:bg-slate-700/30'
             }`}
           >
             <MicIcon className="w-4 h-4 inline" />
@@ -365,8 +353,8 @@ const Dashboard = () => {
             onClick={() => setAiState('thinking')}
             className={`h-12 w-12 cursor-pointer rounded-full text-sm font-medium transition-all duration-200 backdrop-blur-sm ${
               aiState === 'thinking' 
-                ? 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30 shadow-lg shadow-yellow-500/20' 
-                : 'bg-slate-800/30 text-slate-400 border border-slate-700/30 hover:bg-slate-700/30'
+                ? 'bg-yellow-500/20 text-yellow-400 border-2 border-x-0 border-yellow-500/30 shadow-lg shadow-yellow-500/20' 
+                : 'bg-slate-800/30 text-slate-400 border-2 border-x-0 border-slate-700/30 hover:bg-slate-700/30'
             }`}
           >
             <Lightbulb className="w-4 h-4 inline" />
@@ -376,8 +364,8 @@ const Dashboard = () => {
             onClick={() => setAiState('replying')}
             className={`h-12 w-12 cursor-pointer rounded-full text-sm font-medium transition-all duration-200 backdrop-blur-sm ${
               aiState === 'replying' 
-                ? 'bg-green-500/20 text-green-400 border border-green-500/30 shadow-lg shadow-green-500/20' 
-                : 'bg-slate-800/30 text-slate-400 border border-slate-700/30 hover:bg-slate-700/30'
+                ? 'bg-green-500/20 text-green-400 border-2 border-x-0 border-green-500/30 shadow-lg shadow-green-500/20' 
+                : 'bg-slate-800/30 text-slate-400 border-2 border-x-0 border-slate-700/30 hover:bg-slate-700/30'
             }`}
           >
             <MessageSquare className="w-4 h-4 inline" />
