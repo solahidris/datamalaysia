@@ -1,15 +1,17 @@
 import { states } from '@/data/states';
 import type { DataCategory } from '@/types';
 import { getCategoryLabel, getDataValue, formatValue } from '@/lib/helpers';
+import MapLegend from './MapLegend';
 
 interface MalaysiaMapProps {
   activeState: string | null;
   selectedCategory: DataCategory;
   onStateChange: (stateId: string | null) => void;
   getStateData: (stateName: string, category: DataCategory) => any;
+  showMapLegend: boolean;
 }
 
-const MalaysiaMap = ({ activeState, selectedCategory, onStateChange, getStateData }: MalaysiaMapProps) => {
+const MalaysiaMap = ({ activeState, selectedCategory, onStateChange, getStateData, showMapLegend = false }: MalaysiaMapProps) => {
   return (
     <div className="relative bg-white rounded-3xl shadow-lg p-8 flex flex-col justify-center items-center">
       {/* State name and data display */}
@@ -68,13 +70,19 @@ const MalaysiaMap = ({ activeState, selectedCategory, onStateChange, getStateDat
                   strokeWidth="1.5"
                   className="transition-all duration-200 cursor-pointer hover:fill-sky-500"
                   onMouseEnter={() => onStateChange(state.id)}
-                  onMouseLeave={() => {}} // Don't clear state on mouse leave
+                  onMouseLeave={() => { }} // Don't clear state on mouse leave
                 />
               </g>
             );
           })}
         </svg>
       </div>
+
+      {showMapLegend &&
+        <div className='-mb-4'>
+          <MapLegend />
+        </div>
+      }
 
       <style jsx>{`
         @keyframes fade-in {

@@ -105,9 +105,9 @@ const MapB = () => {
           selectedCategory={selectedCategory}
           onStateChange={setActiveState}
           getStateData={getStateData}
+          showMapLegend={true}
         />
 
-        <MapLegend />
 
         {isProMode && (
           <ChartSection

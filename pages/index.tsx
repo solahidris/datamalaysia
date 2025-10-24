@@ -44,6 +44,7 @@ const Home = () => {
           selectedCategory={selectedCategory}
           onStateChange={setActiveState}
           getStateData={getStateData}
+          showMapLegend={false}
         />
 
         <MapLegend />
