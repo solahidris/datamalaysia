@@ -13,7 +13,7 @@ interface MalaysiaMapProps {
 
 const MalaysiaMap = ({ activeState, selectedCategory, onStateChange, getStateData, showMapLegend = false }: MalaysiaMapProps) => {
   return (
-    <div className="relative bg-white rounded-3xl shadow-lg p-8 flex flex-col justify-center items-center">
+    <div className="relative bg-white rounded-xl shadow-lg p-8 flex flex-col justify-center items-center">
       {/* State name and data display */}
       <div className="absolute top-0 lg:top-20 text-center min-h-[100px] flex flex-col items-center justify-center">
         {activeState ? (
@@ -35,7 +35,7 @@ const MalaysiaMap = ({ activeState, selectedCategory, onStateChange, getStateDat
                 </div>
               ) : (
                 <div className="text-sm lg:text-base text-gray-500">
-                  No data available
+                  Loading data...
                 </div>
               );
             })()}

@@ -1,4 +1,22 @@
 export const STATE_MAPPING: Record<string, string> = {
+  // State IDs (lowercase) to data names
+  'perlis': 'Perlis',
+  'kedah': 'Kedah',
+  'penang': 'Pulau Pinang',
+  'perak': 'Perak',
+  'terengganu': 'Terengganu',
+  'pahang': 'Pahang',
+  'kelantan': 'Kelantan',
+  'negerisembilan': 'Negeri Sembilan',
+  'malacca': 'Melaka',
+  'putrajaya': 'W.P. Putrajaya',
+  'selangor': 'Selangor',
+  'kualalumpur': 'W.P. Kuala Lumpur',
+  'johor': 'Johor',
+  'sabah': 'Sabah',
+  'labuan': 'W.P. Labuan',
+  'sarawak': 'Sarawak',
+  // Also include the capitalized versions for backward compatibility
   'Perlis': 'Perlis',
   'Kedah': 'Kedah',
   'Pulau Pinang': 'Pulau Pinang',

@@ -1,13 +1,13 @@
 const Footer = () => {
   return (
-    <div className="mt-8 text-center text-sm text-gray-600">
+    <div className="mt-20 text-center text-sm text-gray-600">
       <p className="mb-2">Malaysia consists of 13 states and 3 federal territories</p>
       <p className="text-xs text-gray-500 mb-2">
-        Data source: Department of Statistics Malaysia (DOSM) - Household Income & Expenditure Survey
+        {`Data source: Department of Statistics Malaysia (DOSM) - https://data.gov.my/`}
       </p>
-      <a href="https://x.com/solahsol_" className="text-xs text-cyan-600 mb-4 underline">
+      {/* <a href="https://x.com/solahsol_" className="text-xs text-cyan-600 mb-4 underline">
         Built for fun in 3 hours by Solah
-      </a>
+      </a> */}
     </div>
   );
 };

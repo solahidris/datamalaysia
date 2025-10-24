@@ -53,8 +53,6 @@ const Home = () => {
           selectedState={activeState || 'Selangor'}
           selectedChartType={selectedChartType}
           chartData={chartData}
-          onStateChange={setActiveState}
-          onChartTypeChange={setSelectedChartType}
         />
 
         <Footer />

@@ -37,13 +37,24 @@ const CategorySelectorDialog = ({ selectedCategory, onCategoryChange }: Category
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline" className="w-full justify-between">
+        <Button variant="outline" className="border-0 shadow-md w-full justify-between p-6 rounded-xl">
           <span className="flex items-center gap-2">
             {selectedCategoryData?.label}
           </span>
-          <span className="text-xs text-muted-foreground">
-            Select Category
-          </span>
+          <svg
+            className="h-4 w-4 text-muted-foreground"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M19 9l-7 7-7-7"
+            />
+          </svg>
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-md bg-gray-100">
@@ -58,9 +69,9 @@ const CategorySelectorDialog = ({ selectedCategory, onCategoryChange }: Category
             <Button
               key={category.id}
               variant={selectedCategory === category.id ? "default" : "outline"}
-              className={`justify-start h-auto p-4 transition-all duration-200 ${
+              className={`border-0 justify-start h-auto p-4 transition-all duration-200 shadow-md ${
                 selectedCategory === category.id 
-                  ? "bg-gray-900 text-white hover:bg-gray-800 border-gray-900 shadow-lg" 
+                  ? "bg-gray-900 text-white hover:bg-gray-800 border-gray-900" 
                   : "bg-white hover:bg-gray-50 border-gray-300"
               }`}
               onClick={() => handleCategorySelect(category.id)}

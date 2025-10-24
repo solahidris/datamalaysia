@@ -28,13 +28,24 @@ const StateSelectorDialog = ({ selectedState, onStateChange }: StateSelectorDial
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline" className="w-full justify-between bg-white">
+        <Button variant="outline" className="border-0 shadow-md w-full justify-between bg-white p-6 rounded-xl">
           <span className="flex items-center gap-2">
             {selectedStateData?.name || 'Select a state'}
           </span>
-          <span className="text-xs text-muted-foreground">
-            Choose State
-          </span>
+          <svg
+            className="h-4 w-4 text-muted-foreground"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M19 9l-7 7-7-7"
+            />
+          </svg>
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-md bg-gray-100 max-h-[80vh] overflow-y-auto">
@@ -49,9 +60,9 @@ const StateSelectorDialog = ({ selectedState, onStateChange }: StateSelectorDial
             <Button
               key={state.id}
               variant={selectedState === state.id ? "default" : "outline"}
-              className={`h-auto px-3 py-2 transition-all duration-200 ${
+              className={`border-0 h-auto px-3 py-2 transition-all duration-200 shadow-md ${
                 selectedState === state.id 
-                  ? "bg-gray-900 text-white hover:bg-gray-800 border-gray-900 shadow-lg" 
+                  ? "bg-gray-900 text-white hover:bg-gray-800 border-gray-900" 
                   : "bg-white hover:bg-gray-50 border-gray-300"
               }`}
               onClick={() => handleStateSelect(state.id)}

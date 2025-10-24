@@ -29,7 +29,7 @@ interface DataContextType {
 const DataContext = createContext<DataContextType | undefined>(undefined);
 
 export const DataProvider = ({ children }: { children: ReactNode }) => {
-  const [activeState, setActiveState] = useState<string | null>(null);
+  const [activeState, setActiveState] = useState<string | null>('selangor');
   const [selectedCategory, setSelectedCategory] = useState<DataCategory>('income_median');
   const [selectedChartType, setSelectedChartType] = useState<ChartType>('income');
 
