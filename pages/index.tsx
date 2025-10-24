@@ -1,6 +1,7 @@
 import { useData } from '@/contexts/DataContext';
 import Header from '@/components/Header';
-import CategorySelector from '@/components/CategorySelector';
+import CategorySelectorDialog from '@/components/CategorySelectorDialog';
+import StateSelectorDialog from '@/components/StateSelector';
 import MalaysiaMap from '@/components/MalaysiaMap';
 import MapLegend from '@/components/MapLegend';
 import ChartSection from '@/components/ChartSection';
@@ -8,13 +9,11 @@ import Footer from '@/components/Footer';
 
 const Home = () => {
   const {
-    hoveredState,
+    activeState,
     selectedCategory,
-    selectedStateForChart,
     selectedChartType,
-    setHoveredState,
+    setActiveState,
     setSelectedCategory,
-    setSelectedStateForChart,
     setSelectedChartType,
     getStateData,
     chartData
@@ -25,25 +24,35 @@ const Home = () => {
       <div className="max-w-6xl mx-auto">
         <Header />
 
-        <CategorySelector
-          selectedCategory={selectedCategory}
-          onCategoryChange={setSelectedCategory}
-        />
+        <div className="flex flex-col sm:flex-row gap-4 mb-8">
+          <div className="flex-1">
+            <CategorySelectorDialog
+              selectedCategory={selectedCategory}
+              onCategoryChange={setSelectedCategory}
+            />
+          </div>
+          <div className="flex-1">
+            <StateSelectorDialog
+              selectedState={activeState}
+              onStateChange={setActiveState}
+            />
+          </div>
+        </div>
 
         <MalaysiaMap
-          hoveredState={hoveredState}
+          activeState={activeState}
           selectedCategory={selectedCategory}
-          onStateHover={setHoveredState}
+          onStateChange={setActiveState}
           getStateData={getStateData}
         />
 
         <MapLegend />
 
         <ChartSection
-          selectedState={selectedStateForChart}
+          selectedState={activeState || 'Selangor'}
           selectedChartType={selectedChartType}
           chartData={chartData}
-          onStateChange={setSelectedStateForChart}
+          onStateChange={setActiveState}
           onChartTypeChange={setSelectedChartType}
         />
 

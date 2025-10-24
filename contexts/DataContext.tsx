@@ -6,15 +6,13 @@ import { type ChartType } from '@/lib/constants';
 
 interface DataContextType {
   // State
-  hoveredState: string | null;
+  activeState: string | null;
   selectedCategory: DataCategory;
-  selectedStateForChart: string;
   selectedChartType: ChartType;
   
   // Actions
-  setHoveredState: (state: string | null) => void;
+  setActiveState: (state: string | null) => void;
   setSelectedCategory: (category: DataCategory) => void;
-  setSelectedStateForChart: (state: string) => void;
   setSelectedChartType: (type: ChartType) => void;
   
   // Computed data
@@ -31,9 +29,8 @@ interface DataContextType {
 const DataContext = createContext<DataContextType | undefined>(undefined);
 
 export const DataProvider = ({ children }: { children: ReactNode }) => {
-  const [hoveredState, setHoveredState] = useState<string | null>(null);
+  const [activeState, setActiveState] = useState<string | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<DataCategory>('income_median');
-  const [selectedStateForChart, setSelectedStateForChart] = useState<string>('Selangor');
   const [selectedChartType, setSelectedChartType] = useState<ChartType>('income');
 
   const {
@@ -64,7 +61,15 @@ export const DataProvider = ({ children }: { children: ReactNode }) => {
   }, [incomeData, populationData, crimeData, waterConsumptionData, householdExpenseData]);
 
   const chartData = useMemo(() => {
-    const mappedName = mapStateName(selectedStateForChart);
+    if (!activeState) return {
+      income: [],
+      population: [],
+      crime: [],
+      water: [],
+      expense: []
+    };
+
+    const mappedName = mapStateName(activeState);
 
     return {
       income: filterAndSortByState(incomeData, mappedName),
@@ -73,16 +78,14 @@ export const DataProvider = ({ children }: { children: ReactNode }) => {
       water: filterAndSortByState(waterConsumptionData, mappedName),
       expense: filterAndSortByState(householdExpenseData, mappedName)
     };
-  }, [selectedStateForChart, incomeData, populationData, crimeData, waterConsumptionData, householdExpenseData]);
+  }, [activeState, incomeData, populationData, crimeData, waterConsumptionData, householdExpenseData]);
 
   const value = {
-    hoveredState,
+    activeState,
     selectedCategory,
-    selectedStateForChart,
     selectedChartType,
-    setHoveredState,
+    setActiveState,
     setSelectedCategory,
-    setSelectedStateForChart,
     setSelectedChartType,
     getStateData,
     chartData
