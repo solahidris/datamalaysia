@@ -13,35 +13,35 @@ interface MalaysiaMapProps {
 
 const MalaysiaMap = ({ activeState, selectedCategory, onStateChange, getStateData, showMapLegend = false }: MalaysiaMapProps) => {
   return (
-    <div className="relative bg-white rounded-xl shadow-lg p-8 flex flex-col justify-center items-center">
+    <div className="relative bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 pt-16 lg:pt-8 flex flex-col justify-center items-center">
       {/* State name and data display */}
       <div className="absolute top-0 lg:top-20 text-center min-h-[100px] flex flex-col items-center justify-center">
         {activeState ? (
           <div className="animate-fade-in">
-            <div className="text-xl lg:text-4xl font-bold text-sky-600 mb-0 lg:mb-2">
+            <div className="text-xl lg:text-4xl font-bold text-sky-600 dark:text-sky-400 mb-0 lg:mb-2">
               {states.find(s => s.id === activeState)?.name}
             </div>
             {(() => {
               const stateName = states.find(s => s.id === activeState)?.name || '';
               const data = getStateData(stateName, selectedCategory);
               return data ? (
-                <div className="text-xs lg:text-2xl text-gray-700">
-                  <div className="font-semibold text-gray-500 text-xs lg:text-base mb-1">
+                <div className="text-xs lg:text-2xl text-gray-700 dark:text-gray-300">
+                  <div className="font-semibold text-gray-500 dark:text-gray-400 text-xs lg:text-base mb-1">
                     {getCategoryLabel(selectedCategory)}
                   </div>
-                  <div className="font-bold text-sky-600">
+                  <div className="font-bold text-sky-600 dark:text-sky-400">
                     {formatValue(getDataValue(data, selectedCategory), selectedCategory)}
                   </div>
                 </div>
               ) : (
-                <div className="text-sm lg:text-base text-gray-500">
+                <div className="text-sm lg:text-base text-gray-500 dark:text-gray-400">
                   Loading data...
                 </div>
               );
             })()}
           </div>
         ) : (
-          <div className="tracking-wide font-bold text-gray-400 mb-2">
+          <div className="tracking-wide font-bold text-gray-400 dark:text-gray-500 mb-2">
             Hover over a state or select one...
           </div>
         )}
@@ -55,20 +55,20 @@ const MalaysiaMap = ({ activeState, selectedCategory, onStateChange, getStateDat
           xmlns="http://www.w3.org/2000/svg"
         >
           {states.map((state) => {
-            // Determine fill color based on active state
-            let fillColor = '#e5e7eb'; // default gray
-            if (activeState === state.id) {
-              fillColor = '#0ea5e9'; // bright blue for active state
-            }
-
+            const isActive = activeState === state.id;
+            
             return (
               <g key={state.id}>
                 <path
                   d={state.path}
-                  fill={fillColor}
+                  fill={isActive ? '#0ea5e9' : '#e5e7eb'}
                   stroke="#374151"
                   strokeWidth="1.5"
-                  className="transition-all duration-200 cursor-pointer hover:fill-sky-500"
+                  className={`transition-all duration-200 cursor-pointer hover:fill-sky-500 dark:hover:fill-sky-400 ${
+                    isActive 
+                      ? 'dark:fill-sky-500' 
+                      : 'dark:fill-gray-600'
+                  } dark:stroke-gray-400`}
                   onMouseEnter={() => onStateChange(state.id)}
                   onMouseLeave={() => { }} // Don't clear state on mouse leave
                 />
